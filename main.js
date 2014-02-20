@@ -69,4 +69,6 @@ function fetchIssues() {
 
 // Fetch issues every 5 minutes
 setInterval(fetchIssues, 5 * 60 * 1000);
+
+fetchIssues();
 app.listen(settings.port);
