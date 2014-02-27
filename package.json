@@ -3,6 +3,7 @@
   "dependencies": {
     "github": "~0.1.14",
     "lodash": "~2.4.1",
-    "express": "~3.4.8"
+    "express": "~3.4.8",
+    "q": "~1.0.0"
   }
 }

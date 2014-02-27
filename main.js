@@ -3,6 +3,7 @@ var GitHub = require('github');
 var _ = require('lodash');
 var fs = require('fs');
 var settings = require('./settings');
+var Q = require('q');
 var app = express();
 
 app.configure(function() {
@@ -34,12 +35,18 @@ github.auth = {
 
 function fetchIssues() {
   var masterList = [];
+  var deferred = Q.defer();
 
   repos.forEach(function(repo) {
     github.issues.repoIssues({
       user: 'mozilla-cordova',
       repo: repo
     }, function(err, issues) {
+      if(err) { 
+        deferred.reject(err);
+        return;
+      }
+
       masterList.push(issues.map(function(iss) {
         iss.repo = repo;
         return iss;
@@ -60,15 +67,95 @@ function fetchIssues() {
       }
       return 1;
     });
-    
-    fs.writeFile(__dirname + '/static/issues.js',
-                 'var CORDOVA_ISSUES = ' + JSON.stringify(issues),
-                 function() {});
+
+    deferred.resolve(issues);
   }
+
+  return deferred.promise;
 }
 
-// Fetch issues every 5 minutes
-setInterval(fetchIssues, 5 * 60 * 1000);
+function fetchRepos() {
+  var masterList = [];
+  var deferred = Q.defer();
 
-fetchIssues();
+  repos.forEach(function(repo) {
+    github.repos.getCommits({
+      user: 'apache',
+      repo: repo,
+      sha: 'dev',
+      per_page: 50
+    }, function(err, apacheCommits) {
+      if(err) {
+        deferred.reject(err);
+        return;
+      }
+
+      github.repos.getCommits({
+        user: 'mozilla-cordova',
+        repo: repo,
+        sha: 'dev',
+        per_page: 50
+      }, function(err, mozCommits) {
+        if(err) {
+          deferred.reject(err);
+          return;
+        }
+
+        // Search for the most recent common commit
+        var commonSha;
+
+        apacheCommits.some(function(commit) {
+          mozCommits.some(function(commit2) {
+            if(commit.sha === commit2.sha) {
+              commonSha = commit.sha;
+              return true;
+            }
+          });
+
+          return commonSha;
+        });
+
+        var status = [];
+        if(commonSha !== apacheCommits[0].sha) {
+          status.push('out-of-date');
+        }
+
+        if(commonSha !== mozCommits[0].sha) {
+          status.push('new-commits');
+        }
+
+        masterList.push({ repo: repo, status: status });
+
+        if(masterList.length === repos.length) {
+          deferred.resolve(masterList);
+        }
+      });
+    });
+  });
+
+  return deferred.promise;
+}
+
+function writeCache() {
+  fetchIssues().then(function(issues) {
+    fetchRepos().then(function(repos) {
+      var json = JSON.stringify({
+        issues: issues,
+        repos: repos
+      });
+
+      fs.writeFile(__dirname + '/static/issues.js',
+                   'var CORDOVA_STATUS = ' + json,
+                   function() {});
+
+    });
+  });
+
+
+}
+
+// Fetch issues every 10 minutes
+setInterval(writeCache, 10 * 60 * 1000);
+
+writeCache();
 app.listen(settings.port);
