@@ -46,7 +46,7 @@ function fetchIssues() {
       user: 'mozilla-cordova',
       repo: repo
     }, function(err, issues) {
-      if(err) { 
+      if(err) {
         deferred.reject(err);
         return;
       }
@@ -90,8 +90,8 @@ function fetchRepos() {
       per_page: 50
     }, function(err, apacheCommits) {
       if(err) {
-        console.log('[' + repo + '] ' + err); 
-	masterList.push({ repo: repo, status: [] });
+        console.log('[' + repo + '] ' + err);
+        masterList.push({ repo: repo, status: [] });
         return;
       }
 
@@ -102,7 +102,7 @@ function fetchRepos() {
         per_page: 50
       }, function(err, mozCommits) {
         if(err) {
-          masterList.push({ repo: repo, status: [] }); 
+          masterList.push({ repo: repo, status: [] });
           return;
         }
 
