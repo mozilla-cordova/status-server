@@ -90,7 +90,8 @@ function fetchRepos() {
       per_page: 50
     }, function(err, apacheCommits) {
       if(err) {
-        deferred.reject(err);
+        console.log('[' + repo + '] ' + err); 
+	masterList.push({ repo: repo, status: [] });
         return;
       }
 
@@ -101,7 +102,7 @@ function fetchRepos() {
         per_page: 50
       }, function(err, mozCommits) {
         if(err) {
-          deferred.reject(err);
+          masterList.push({ repo: repo, status: [] }); 
           return;
         }
 
@@ -142,7 +143,7 @@ function fetchRepos() {
 
 function writeCache() {
   fetchIssues().then(function(issues) {
-    fetchRepos().then(function(repos) {
+    return fetchRepos().then(function(repos) {
       var json = JSON.stringify({
         issues: issues,
         repos: repos
@@ -153,9 +154,7 @@ function writeCache() {
                    function() {});
 
     });
-  });
-
-
+  }).done();
 }
 
 // Fetch issues every 10 minutes
