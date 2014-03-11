@@ -23,7 +23,11 @@ var repos = [
   'cordova-plugin-device-orientation',
   'cordova-plugin-device-motion',
   'cordova-plugin-contacts',
-  'cordova-plugin-battery-status'
+  'cordova-plugin-battery-status',
+  'cordova-plugin-file',
+  'cordova-plugin-file-transfer',
+  'cordova-cli',
+  'cordova-mobile-spec'
 ];
 
 // Don't use the official `authenticate` call because it won't accept
