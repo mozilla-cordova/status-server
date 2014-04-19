@@ -1,9 +1,12 @@
 {
   "title": "cordova-status-server",
   "dependencies": {
-    "github": "~0.1.14",
+    "github": "~0.1.16",
     "lodash": "~2.4.1",
     "express": "~3.4.8",
-    "q": "~1.0.0"
-  }
+    "q": "~1.0.1",
+    "path": "~0.4.9",
+    "request": "~2.34.0"
+  },
+  "main": "main.js"
 }
