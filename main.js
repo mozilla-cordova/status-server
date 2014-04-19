@@ -68,7 +68,9 @@ var repos = [
     name: 'cordova-mobile-spec',
     branch: 'master'
   }
-];
+].sort(function(a, b) {
+    return a.name.localeCompare(b.name);
+  });
 
 // Don't use the official `authenticate` call because it won't accept
 // the type of token, when it works just fine with github's 3.0.0 API
