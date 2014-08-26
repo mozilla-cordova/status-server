@@ -40,6 +40,8 @@ if (!fs.existsSync(ISSUES_DIR)) {
 }
 
 writeCache();
-app.listen(process.env.PORT || settings.port);
 
-console.log('Service started.');
+var server = app.listen(process.env.PORT || settings.port);
+var address = server.address();
+
+console.log('Service started at', address.address + ':' + address.port);
