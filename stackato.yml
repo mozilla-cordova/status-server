@@ -1,4 +1,3 @@
-app-dir: /Users/zalun/Projects/Cordova/status-server
 disk: 2048
 framework:
   runtime: node
