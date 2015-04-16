@@ -1,4 +1,7 @@
+app-dir: /Users/zalun/Projects/Cordova/status-server
+disk: 2048
+framework:
+  runtime: node
+  type: node
+memory: 512
 name: mozilla-cordova
-
-mem: 512M
-
