@@ -1,5 +1,7 @@
 {
+  "name": "cordova-status-server",
   "title": "cordova-status-server",
+  "version": "1.0.0",
   "dependencies": {
     "github": "~0.1.16",
     "lodash": "~2.4.1",
