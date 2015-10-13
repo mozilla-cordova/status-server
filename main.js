@@ -31,12 +31,15 @@ function writeCache() {
 setInterval(writeCache, 10 * 60 * 1000);
 
 // Create issues folder if it does not exist
-if (!fs.existsSync(ISSUES_DIR)) {
-  fs.mkdirSync(ISSUES_DIR, function(err) {
-    if (err) {
-      console.log("ERROR! Can't make the directory!", err);
-    }
-  });
+try {
+  fs.accessSync(ISSUES_DIR)
+} catch(e) {
+  console.log('DEBUG: creating', ISSUES_DIR);
+  try {
+    fs.mkdirSync(ISSUES_DIR);
+  } catch(err) {
+    console.log("ERROR! Can't make the directory!", err);
+  }
 }
 
 writeCache();

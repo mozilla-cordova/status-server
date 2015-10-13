@@ -3,4 +3,4 @@ framework:
   runtime: node
   type: node
 memory: 512
-name: mozilla-cordova
+name: mozilla-cordova-status
