@@ -1,10 +1,10 @@
 var express = require('express');
 var fs = require('fs');
-var settings = require('./settings');
 var Q = require('q');
 var path = require('path');
 var jira = require('./lib/jira.js');
 var github = require('./lib/github');
+var settings = require('./settings');
 
 var app = express();
 var ISSUES_DIR = path.join(__dirname, 'static');
