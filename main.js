@@ -4,7 +4,7 @@ var Q = require('q');
 var path = require('path');
 var jira = require('./lib/jira.js');
 var github = require('./lib/github');
-var settings = require('./settings');
+var settings = require('./settings/base');
 
 var app = express();
 var ISSUES_DIR = path.join(__dirname, 'static');
