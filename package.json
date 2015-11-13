@@ -10,5 +10,6 @@
     "path": "~0.4.9",
     "request": "~2.34.0"
   },
-  "main": "main.js"
+  "main": "main.js",
+  "start": "node main.js"
 }
