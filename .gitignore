@@ -1,3 +1,4 @@
 node_modules
 static/issues.js
-settings.js
+settings/base.js
+.env

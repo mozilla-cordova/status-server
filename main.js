@@ -4,10 +4,13 @@ var Q = require('q');
 var path = require('path');
 var jira = require('./lib/jira.js');
 var github = require('./lib/github');
-var settings = require('./settings/base');
 
 var app = express();
 var ISSUES_DIR = path.join(__dirname, 'static');
+
+if (!(process.env.GITHUB_TOKEN && process.env.PORT)) {
+  throw('Please set GITHUB_TOKEN and PORT environment variables');
+}
 
 app.configure(function() {
   app.use(express.static(ISSUES_DIR));
@@ -44,7 +47,7 @@ try {
 
 writeCache();
 
-var server = app.listen(process.env.PORT || settings.port);
+var server = app.listen(process.env.PORT);
 var address = server.address();
 
 console.log('Service started at', address.address + ':' + address.port);
